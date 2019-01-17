@@ -8,25 +8,30 @@
 
 int main(int argc, char *argv[])
 {
-    /*
+
     QApplication a(argc, argv);
     MainWindow w;
 
     w.setWindowTitle("Window1");
-    //w.resize(400, 300);
+    w.resize(800, 600);
     w.show();
 
-    QMessageBox msg(&w);
-    msg.setWindowTitle("Choice");
-    msg.setText("Test text");
-    msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    std::vector<std::string> names;
+    names.push_back("GM");
+    Game aGame(names, &w);
+    aGame.Play();
 
-    if(msg.exec() == QMessageBox::Ok)
-        qDebug() << "Ok is clicked!";
-
-    return a.exec();
+    /*
+    QMessageBox quit(&w);
+    quit.setText("quit?");
+    quit.setStandardButtons(QMessageBox::Yes);
+    if (quit.exec() == QMessageBox::Yes)
+       qDebug() << "QUIT";
     */
+    return a.exec();
 
+
+    /*
     std::cout << "\t\t Welcome to BlackJack!\n\n";
 
     int numPlayers = 0;
@@ -57,4 +62,5 @@ int main(int argc, char *argv[])
     }
 
     return 0;
+    */
 }

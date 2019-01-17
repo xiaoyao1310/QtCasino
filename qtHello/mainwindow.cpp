@@ -17,14 +17,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_tedt = new QTextEdit(this);
     m_tedt->move(80, 200);
-    m_tedt->resize(500,200); //pukecard 105 * 150
-    m_tedt->insertHtml("QTextEdit\n");
-    QString imgDir = QCoreApplication::applicationDirPath() + "/pukeImage";
-    imgDir += "/h1.jpg";
-    imgDir.prepend("<img src=\"");
-    imgDir.append("\"/>");      // <img src="dir"/>
-    m_tedt->insertHtml(imgDir);
+    m_tedt->resize(700,200); //pukecard 105 * 150
     m_tedt->setReadOnly(true);
+
+    //QString card = "/h1.jpg";
+    //showCard(card);
+
+    m_tedt2 = new QTextEdit(this);
+    m_tedt2->move(80, 400);
+    m_tedt2->resize(700,200);
+    m_tedt2->setReadOnly(true);
+
 
     m_edit = new QLineEdit(this);
     if(m_edit != NULL)
@@ -37,19 +40,21 @@ MainWindow::MainWindow(QWidget *parent) :
     m_buttons[0] = new QPushButton(this);
     if(m_buttons[0] != NULL)
     {
-        m_buttons[0]->setText("Button 1");
+        m_buttons[0]->setText("Hit");
         m_buttons[0]->move(20, 25);
         m_buttons[0]->resize(150, 50);
     }
     m_buttons[1] = new QPushButton(this);
     if(m_buttons[1] != NULL)
     {
-        m_buttons[1]->setText("Button 2");
+        m_buttons[1]->setText("No hit");
         m_buttons[1]->move(200, 25);
         m_buttons[1]->resize(150, 50);
     }
 
     connect(m_buttons[0], SIGNAL(clicked()), this, SLOT(onMyButtonClicked()));
+    connect(m_buttons[1], SIGNAL(clicked()), this, SLOT(onMyButton2Clicked()));
+
 }
 
 void MainWindow::makeAction(QAction *&action, QString text, int key)
@@ -70,9 +75,28 @@ void MainWindow::initMenu(QMenuBar *mb)
     mb->addMenu(menu);
 }
 
+/*
+void MainWindow::showCard(QString& card)
+{
+    m_tedt->insertHtml("QTextEdit\n");
+    QString imgDir = QCoreApplication::applicationDirPath() + "/pukeImage";
+    imgDir += card;
+    imgDir.prepend("<img src=\"");
+    imgDir.append("\"/>");      // <img src="imgDir"/>
+    qDebug() << imgDir;
+    m_tedt->insertHtml(imgDir);
+    m_tedt->setReadOnly(true);
+}
+*/
+
 void MainWindow::onMyButtonClicked()
 {
     qDebug() << "onMyButtonClicked()";
+}
+
+void MainWindow::onMyButton2Clicked()
+{
+    qDebug() << "Button2";
 }
 
 MainWindow::~MainWindow()
@@ -84,5 +108,6 @@ MainWindow::~MainWindow()
     delete m_buttons[0];
     delete m_buttons[1];
     delete m_tedt;
+    delete m_tedt2;
 }
 

@@ -1,6 +1,6 @@
 #include "game.h"
 
-Game::Game(const std::vector<std::string>& names)
+Game::Game(const std::vector<std::string>& names, MainWindow* pMw)
 {
     std::vector<std::string>::const_iterator pName;
     for (pName = names.begin(); pName != names.end(); ++pName)
@@ -10,6 +10,7 @@ Game::Game(const std::vector<std::string>& names)
     srand(static_cast<unsigned>(time(0)));
     m_deck.Populate();
     m_deck.Shuffle();
+    m_window = pMw;
 }
 
 Game::~Game()
@@ -21,6 +22,7 @@ void Game::Play()
     std::vector<Player>::iterator pPlayer;
     for (int i = 0; i < 2; ++i)
     {
+        // deal two cards in the beginning
         for (pPlayer = m_players.begin(); pPlayer != m_players.end(); ++pPlayer)
             m_deck.Deal(*pPlayer);
 
@@ -29,17 +31,24 @@ void Game::Play()
 
     // hide house's first card
     m_house.FlipFirstCard();
+    m_house.ShowHand(m_window);
 
     // display players' hand
     for (pPlayer = m_players.begin(); pPlayer != m_players.end(); ++pPlayer)
-        m_deck.AdditionalCards(*pPlayer);
+    {
+        (*pPlayer).ShowHand(m_window);
+        m_deck.AdditionalCards(*pPlayer, m_window);
+    }
 
     // reveal house's first card
     m_house.FlipFirstCard();
+
     std::cout << std::endl << m_house;
+    m_house.ShowHand(m_window);
+
 
     // deal additional cards to house
-    m_deck.AdditionalCards(m_house);
+    m_deck.AdditionalCards(m_house, m_window);
 
     if (m_house.IsBusted())
     {

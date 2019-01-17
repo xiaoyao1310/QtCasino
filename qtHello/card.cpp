@@ -23,6 +23,21 @@ void Card::Flip()
     m_isFaceUp = !(m_isFaceUp);
 }
 
+QString Card::QstringType()
+{
+    const std::string RANKS[] = {"0", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+                              "J", "Q", "K"};
+    const std::string SUITS[] = {"c", "d", "h", "s"};
+
+    if (m_isFaceUp)
+    {
+        return QString::fromStdString(RANKS[m_rank] + SUITS[m_suit]);
+    }
+    else
+        return "0";
+}
+
+// console edition output
 std::ostream& operator<<(std::ostream& os, const Card& aCard)
 {
     const std::string RANKS[] = {"0", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10",

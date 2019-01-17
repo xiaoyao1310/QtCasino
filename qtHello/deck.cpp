@@ -41,14 +41,16 @@ void Deck::Deal(Hand &aHand)
     }
 }
 
-void Deck::AdditionalCards(GenericPlayer &aGenericPlayer)
+void Deck::AdditionalCards(GenericPlayer &aGenericPlayer, MainWindow*& pMw)
 {
     std::cout << std::endl;
     
-    while (!(aGenericPlayer.IsBusted()) && aGenericPlayer.IsHitting())
+    while (!(aGenericPlayer.IsBusted()) && aGenericPlayer.IsHitting(pMw))
     {
         Deal(aGenericPlayer);
+
         std::cout << aGenericPlayer << std::endl;
+        aGenericPlayer.ShowHand(pMw);
 
         if (aGenericPlayer.IsBusted())
             aGenericPlayer.Bust();

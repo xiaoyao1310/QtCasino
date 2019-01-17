@@ -4,6 +4,9 @@
 #include "deck.h"
 #include "house.h"
 #include "player.h"
+#include "mainwindow.h"
+#include <QTextEdit>
+
 
 #include <vector>
 #include <string>
@@ -12,7 +15,7 @@
 class Game
 {
 public:
-    Game(const std::vector<std::string>& names);
+    Game(const std::vector<std::string>& names, MainWindow* pMw);
 
     ~Game();
 
@@ -22,6 +25,8 @@ private:
     Deck m_deck;
     House m_house;
     std::vector<Player> m_players;
+
+    MainWindow* m_window;
 };
 
 #endif // GAME_H

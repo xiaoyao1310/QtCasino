@@ -4,6 +4,9 @@
 #include <iostream>
 #include <string>
 #include "hand.h"
+#include "mainwindow.h"
+
+#include <QTextEdit>
 
 class GenericPlayer : public Hand
 {
@@ -15,13 +18,19 @@ public:
     virtual ~GenericPlayer();
 
     // if keep hitting
-    virtual bool IsHitting() const = 0;
+    virtual bool IsHitting(MainWindow* pMw) const = 0;
 
     // if busted - total value great than 21
     bool IsBusted() const;
 
     //announce busts
     void Bust() const;
+
+    //show hand
+    virtual void ShowHand(MainWindow* pMw) const = 0;
+
+    //show card image, called by ShowHand
+    void ShowCard(QString& card, QTextEdit *&pTedt) const;
 
 protected:
     std::string m_name;

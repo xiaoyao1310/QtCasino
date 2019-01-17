@@ -11,7 +11,7 @@ public:
     virtual ~Player();
 
     //if want another hit
-    virtual bool IsHitting() const;
+    virtual bool IsHitting(MainWindow* pMw) const;
 
     //announce wins
     void Win() const;
@@ -21,6 +21,9 @@ public:
 
     //annouce pushes - tie
     void Push() const;
+
+    //show cards on QTextEdit #2
+    void ShowHand(MainWindow* pMw) const;
 };
 
 #endif // PLAYER_H

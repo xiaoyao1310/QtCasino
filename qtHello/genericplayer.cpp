@@ -1,4 +1,7 @@
 #include "genericplayer.h"
+#include <QString>
+#include <QCoreApplication>
+
 
 GenericPlayer::GenericPlayer(const std::string& name): m_name(name)
 {}
@@ -16,6 +19,19 @@ void GenericPlayer::Bust() const
     std::cout << m_name << " busts.\n";
 }
 
+void GenericPlayer::ShowCard(QString &card, QTextEdit* &pTedt) const
+{
+    pTedt->insertHtml("IMG\n");
+    QString imgDir = QCoreApplication::applicationDirPath() + "/pukeImage/";
+    imgDir += card;
+    imgDir.prepend("<img src=\"");
+    imgDir.append("\"/>");      // <img src="imgDir"/>
+    //qDebug() << imgDir;
+    pTedt->insertHtml(imgDir);
+    pTedt->setReadOnly(true);
+}
+
+// console edition output
 std::ostream& operator<<(std::ostream& os, const GenericPlayer& aGenericPlayer)
 {
     os << aGenericPlayer.m_name << ":\t";

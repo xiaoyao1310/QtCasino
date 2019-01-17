@@ -11,10 +11,13 @@ public:
     virtual ~House();
 
     // if hitting - always hitting when no less than 16
-    virtual bool IsHitting() const;
+    virtual bool IsHitting(MainWindow* pMw) const;
 
     //flips over first card
     void FlipFirstCard();
+
+    //show cards on QTextEdit
+    virtual void ShowHand(MainWindow* pMw) const;
 };
 
 #endif // HOUSE_H

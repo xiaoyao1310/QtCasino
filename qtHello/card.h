@@ -2,6 +2,7 @@
 #define CARD_H
 
 #include <iostream>
+#include <QString>
 
 class Card
 {
@@ -17,6 +18,9 @@ public:
     int GetValue() const;
 
     void Flip();
+
+    // QString type, used to find img url
+    QString QstringType();
 
 private:
     rank m_rank;
