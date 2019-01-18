@@ -14,7 +14,9 @@ Game::Game(const std::vector<std::string>& names, MainWindow* pMw)
 }
 
 Game::~Game()
-{}
+{
+    delete m_window;
+}
 
 void Game::Play()
 {

@@ -10,6 +10,7 @@
 #include <QDebug>
 
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -25,7 +26,7 @@ public:
     // called by construct func
     void makeAction(QAction*& action, QString text, int key);
     void initMenu(QMenuBar* mb);
-    //void showCard(QString& card);
+
 
     QTextEdit* m_tedt; // func ShowHand in Game and Deck need access
     QTextEdit* m_tedt2;
@@ -33,6 +34,9 @@ public:
 protected slots:
     void onMyButtonClicked();
     void onMyButton2Clicked();
+
+signals:
+    void buttonSignal();
 
 private:
     Ui::MainWindow *ui;

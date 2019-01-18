@@ -5,20 +5,21 @@
 #include "house.h"
 #include "player.h"
 #include "mainwindow.h"
+#include <QObject>
 #include <QTextEdit>
-
 
 #include <vector>
 #include <string>
 #include <time.h>
 
-class Game
+class Game : public QObject
 {
+    Q_OBJECT
 public:
     Game(const std::vector<std::string>& names, MainWindow* pMw);
 
     ~Game();
-
+public slots:
     void Play();
 
 private:

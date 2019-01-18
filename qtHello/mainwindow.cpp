@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_buttons[0] = new QPushButton(this);
     if(m_buttons[0] != NULL)
     {
-        m_buttons[0]->setText("Hit");
+        m_buttons[0]->setText("New");
         m_buttons[0]->move(20, 25);
         m_buttons[0]->resize(150, 50);
     }
@@ -76,22 +76,22 @@ void MainWindow::initMenu(QMenuBar *mb)
 }
 
 /*
-void MainWindow::showCard(QString& card)
+void MainWindow::newGame()
 {
-    m_tedt->insertHtml("QTextEdit\n");
-    QString imgDir = QCoreApplication::applicationDirPath() + "/pukeImage";
-    imgDir += card;
-    imgDir.prepend("<img src=\"");
-    imgDir.append("\"/>");      // <img src="imgDir"/>
-    qDebug() << imgDir;
-    m_tedt->insertHtml(imgDir);
-    m_tedt->setReadOnly(true);
+    if (m_game != NULL)
+        delete m_game;
+    std::vector<std::string> names = {"GM"};
+    m_game = new Game(names, this);
+    if (m_game)
+        m_game->Play();
 }
 */
 
 void MainWindow::onMyButtonClicked()
 {
     qDebug() << "onMyButtonClicked()";
+    //QMessageBox
+    emit buttonSignal();
 }
 
 void MainWindow::onMyButton2Clicked()
