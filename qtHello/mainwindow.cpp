@@ -20,9 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_tedt->resize(700,200); //pukecard 105 * 150
     m_tedt->setReadOnly(true);
 
-    //QString card = "/h1.jpg";
-    //showCard(card);
-
     m_tedt2 = new QTextEdit(this);
     m_tedt2->move(80, 400);
     m_tedt2->resize(700,200);
@@ -47,14 +44,22 @@ MainWindow::MainWindow(QWidget *parent) :
     m_buttons[1] = new QPushButton(this);
     if(m_buttons[1] != NULL)
     {
-        m_buttons[1]->setText("No hit");
+        m_buttons[1]->setText("Hit");
         m_buttons[1]->move(200, 25);
-        m_buttons[1]->resize(150, 50);
+        m_buttons[1]->resize(150, 50);        
     }
+    m_buttons[2] = new QPushButton(this);
+    if(m_buttons[2] != NULL)
+    {
+        m_buttons[2]->setText("No Hit");
+        m_buttons[2]->move(380, 25);
+        m_buttons[2]->resize(150, 50);
+    }
+    hideButtons();
 
     connect(m_buttons[0], SIGNAL(clicked()), this, SLOT(onMyButtonClicked()));
     connect(m_buttons[1], SIGNAL(clicked()), this, SLOT(onMyButton2Clicked()));
-
+    connect(m_buttons[2], SIGNAL(clicked()), this, SLOT(onMyButton3Clicked()));
 }
 
 void MainWindow::makeAction(QAction *&action, QString text, int key)
@@ -75,28 +80,40 @@ void MainWindow::initMenu(QMenuBar *mb)
     mb->addMenu(menu);
 }
 
-/*
-void MainWindow::newGame()
-{
-    if (m_game != NULL)
-        delete m_game;
-    std::vector<std::string> names = {"GM"};
-    m_game = new Game(names, this);
-    if (m_game)
-        m_game->Play();
-}
-*/
-
 void MainWindow::onMyButtonClicked()
 {
     qDebug() << "onMyButtonClicked()";
-    //QMessageBox
     emit buttonSignal();
 }
 
 void MainWindow::onMyButton2Clicked()
 {
-    qDebug() << "Button2";
+    qDebug() << "Button2";\
+    emit HitSignal();
+}
+
+void MainWindow::onMyButton3Clicked()
+{
+    qDebug() << "Button3";
+    emit NoHitSignal();
+}
+
+void MainWindow::showButtons()
+{
+    m_buttons[1]->setVisible(true);
+    m_buttons[2]->setVisible(true);
+}
+
+void MainWindow::hideButtons()
+{
+    m_buttons[1]->setVisible(false);
+    m_buttons[2]->setVisible(false);
+}
+
+void MainWindow::showLineEdit(QString s)
+{
+    m_edit->clear();
+    m_edit->insert(s);
 }
 
 MainWindow::~MainWindow()
@@ -107,6 +124,7 @@ MainWindow::~MainWindow()
     delete m_edit;
     delete m_buttons[0];
     delete m_buttons[1];
+    delete m_buttons[2];
     delete m_tedt;
     delete m_tedt2;
 }

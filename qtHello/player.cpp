@@ -1,13 +1,13 @@
 #include "player.h"
 #include <QMessageBox>
 
-Player::Player(const std::string& name): GenericPlayer(name)
+Player::Player(const std::string& name): QObject(nullptr), GenericPlayer(name)
 {}
 
 Player::~Player()
 {}
 
-bool Player::IsHitting(MainWindow* pMw) const
+bool Player::IsHitting()
 {
     // console edition
     /*
@@ -17,14 +17,24 @@ bool Player::IsHitting(MainWindow* pMw) const
     return (response == 'y' || response == 'Y');
     */
 
+    // messsagebox edition
+    /*
     QMessageBox hitBox(pMw);
     hitBox.setWindowTitle("Choice");
     hitBox.setText("Wanna hit?");
     hitBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     if (hitBox.exec() == QMessageBox::Yes)
         return true;
-    //else if (hitBox.exec() == QMessageBox::No)
-    //    return false;
+    return false;
+    */
+
+    // qbutton editon
+    //setHitFlagZero();
+    if (HitFlag == 1) // Hit
+        return true;
+    else if (HitFlag == -1) // No hit
+        return false;
+
     return false;
 }
 
@@ -57,4 +67,19 @@ void Player::ShowHand(MainWindow *pMw) const
             ShowCard(card, pMw->m_tedt2);
         }
     }
+}
+
+void Player::setHitFlagPos()
+{
+    HitFlag = 1;
+}
+
+void Player::setHitFlagNeg()
+{
+    HitFlag = -1;
+}
+
+void Player::setHitFlagZero()
+{
+    HitFlag = 0;
 }

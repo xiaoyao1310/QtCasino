@@ -11,7 +11,7 @@ public:
     virtual ~House();
 
     // if hitting - always hitting when no less than 16
-    virtual bool IsHitting(MainWindow* pMw) const;
+    virtual bool IsHitting();
 
     //flips over first card
     void FlipFirstCard();

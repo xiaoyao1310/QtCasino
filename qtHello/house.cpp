@@ -6,7 +6,7 @@ House::House(const std::string& name): GenericPlayer(name)
 House::~House()
 {}
 
-bool House::IsHitting(MainWindow *pMw) const
+bool House::IsHitting()
 {
     return (GetTotal() <= 16);
 }

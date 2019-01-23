@@ -19,6 +19,11 @@ void GenericPlayer::Bust() const
     std::cout << m_name << " busts.\n";
 }
 
+std::string GenericPlayer::getName() const
+{
+    return m_name;
+}
+
 void GenericPlayer::ShowCard(QString &card, QTextEdit* &pTedt) const
 {
     pTedt->insertHtml("IMG\n");

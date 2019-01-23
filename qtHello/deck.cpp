@@ -45,7 +45,9 @@ void Deck::AdditionalCards(GenericPlayer &aGenericPlayer, MainWindow*& pMw)
 {
     std::cout << std::endl;
     
-    while (!(aGenericPlayer.IsBusted()) && aGenericPlayer.IsHitting(pMw))
+    // use if for qbutton editon, while for console edition or Qmessage edition
+    // while(... && ...)
+    if (!(aGenericPlayer.IsBusted()) && aGenericPlayer.IsHitting())
     {
         Deal(aGenericPlayer);
 

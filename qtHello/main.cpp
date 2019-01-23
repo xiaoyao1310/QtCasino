@@ -16,13 +16,16 @@ int main(int argc, char *argv[])
     w.resize(800, 600);
     w.show();
 
-
     std::vector<std::string> names;
     names.push_back("GM");
     Game aGame(names, &w);
     aGame.Play();
 
     QObject::connect(&w, SIGNAL(buttonSignal()), &aGame, SLOT(Play()));
+    QObject::connect(&w, SIGNAL(HitSignal()), &aGame, SLOT(Hit()));
+    QObject::connect(&w, SIGNAL(NoHitSignal()), &aGame, SLOT(NoHit()));
+
+
     /*
     QMessageBox quit(&w);
     quit.setText("quit?");
@@ -32,7 +35,7 @@ int main(int argc, char *argv[])
     */
     return a.exec();
 
-
+    // console editon
     /*
     std::cout << "\t\t Welcome to BlackJack!\n\n";
 

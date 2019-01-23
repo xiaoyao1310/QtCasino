@@ -17,15 +17,24 @@ class Game : public QObject
     Q_OBJECT
 public:
     Game(const std::vector<std::string>& names, MainWindow* pMw);
-
     ~Game();
+
+    void RemoveCard();
+    void ShowResult();
+
 public slots:
-    void Play();
+    void Play();    
+    void Hit();
+    void NoHit();
+
+signals:
+    void HitCurrent(); // to current player
+    void NoHitCurrent();
 
 private:
     Deck m_deck;
     House m_house;
-    std::vector<Player> m_players;
+    std::vector<Player*> m_players;
 
     MainWindow* m_window;
 };

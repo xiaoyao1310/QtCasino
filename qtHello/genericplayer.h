@@ -18,13 +18,16 @@ public:
     virtual ~GenericPlayer();
 
     // if keep hitting
-    virtual bool IsHitting(MainWindow* pMw) const = 0;
+    virtual bool IsHitting()  = 0;
 
     // if busted - total value great than 21
     bool IsBusted() const;
 
     //announce busts
     void Bust() const;
+
+    // return m_name
+    std::string getName() const;
 
     //show hand
     virtual void ShowHand(MainWindow* pMw) const = 0;
