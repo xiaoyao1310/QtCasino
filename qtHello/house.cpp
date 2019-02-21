@@ -30,7 +30,8 @@ void House::ShowHand(MainWindow* pMw) const
         for (pCard = m_cards.begin(); pCard != m_cards.end(); ++pCard)
         {
             QString card = (*pCard)->QstringType();
-            ShowCard(card, pMw->m_tedt);
+            ShowCard(card, pMw->m_tedt);                       
         }
+        pMw->m_tedt->insertHtml(QString::number(GetTotal()));
     }
 }

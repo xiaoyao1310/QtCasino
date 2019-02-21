@@ -4,9 +4,8 @@
 #include "genericplayer.h"
 #include <QObject>
 
-class Player : public QObject, public GenericPlayer
+class Player : public GenericPlayer
 {
-    Q_OBJECT
 public:
     Player(const std::string& name = "");
 
@@ -27,10 +26,10 @@ public:
     //show cards on QTextEdit #2
     void ShowHand(MainWindow* pMw) const;
 
-public slots:
     void setHitFlagPos();
     void setHitFlagNeg();
     void setHitFlagZero();
+
 private:
     int HitFlag = 0; // 1 for hit, -1 for no hit
 };

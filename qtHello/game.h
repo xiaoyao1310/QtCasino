@@ -21,11 +21,13 @@ public:
 
     void RemoveCard();
     void ShowResult();
+    Player* GetCurrent();
 
 public slots:
     void Play();    
     void Hit();
     void NoHit();
+    bool NextPlayer(); // false if last player
 
 signals:
     void HitCurrent(); // to current player
@@ -35,6 +37,7 @@ private:
     Deck m_deck;
     House m_house;
     std::vector<Player*> m_players;
+    unsigned m_current; //active player, =0 if no player
 
     MainWindow* m_window;
 };

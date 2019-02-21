@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QDebug>
+#include <QInputDialog>
 
 #include <iostream>
 #include "game.h"
@@ -12,60 +13,30 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
 
-    w.setWindowTitle("Window1");
+    w.setWindowTitle("BlackJack");
     w.resize(800, 600);
     w.show();
 
+    bool ok = 0;
+    int numPlayers = 1;
+    while (!ok)
+    {
+        numPlayers = QInputDialog::getInt(&w, "Input number of Players", "1 - 7", 1, 1, 7, 1, &ok);
+    }
+
     std::vector<std::string> names;
-    names.push_back("GM");
+    for (int i = 0; i < numPlayers; i++)
+    {
+        names.push_back("Player" + std::to_string(i+1));
+    }
     Game aGame(names, &w);
     aGame.Play();
 
     QObject::connect(&w, SIGNAL(buttonSignal()), &aGame, SLOT(Play()));
     QObject::connect(&w, SIGNAL(HitSignal()), &aGame, SLOT(Hit()));
     QObject::connect(&w, SIGNAL(NoHitSignal()), &aGame, SLOT(NoHit()));
+    QObject::connect(&w, SIGNAL(NextPlayerSignal()), &aGame, SLOT(NextPlayer()));
+    QObject::connect(&w, SIGNAL(menuSignal1()), &aGame, SLOT(Play()));
 
-
-    /*
-    QMessageBox quit(&w);
-    quit.setText("quit?");
-    quit.setStandardButtons(QMessageBox::Yes);
-    if (quit.exec() == QMessageBox::Yes)
-       qDebug() << "QUIT";
-    */
     return a.exec();
-
-    // console editon
-    /*
-    std::cout << "\t\t Welcome to BlackJack!\n\n";
-
-    int numPlayers = 0;
-    while (numPlayers < 1 || numPlayers > 7)
-    {
-        std::cout << "How many players? (1 - 7):";
-        std::cin >> numPlayers;
-    }
-
-    std::vector<std::string> names;
-    std::string name;
-    for (int i = 0; i < numPlayers; ++i)
-    {
-        std::cout << "Enter player name: ";
-        std::cin >> name;
-        names.push_back(name);
-    }
-    std::cout << std::endl;
-
-    // game loop
-    Game aGame(names);
-    char again = 'y';
-    while (again != 'n' && again != 'N')
-    {
-        aGame.Play();
-        std::cout << "\n Do you want to Play again? (y/n): ";
-        std::cin >> again;
-    }
-
-    return 0;
-    */
 }

@@ -1,7 +1,7 @@
 #include "player.h"
 #include <QMessageBox>
 
-Player::Player(const std::string& name): QObject(nullptr), GenericPlayer(name)
+Player::Player(const std::string& name): GenericPlayer(name)
 {}
 
 Player::~Player()
@@ -9,27 +9,6 @@ Player::~Player()
 
 bool Player::IsHitting()
 {
-    // console edition
-    /*
-    std::cout << m_name << ", do you want a hit? (Y/N):";   
-    char response;
-    std::cin >> response;
-    return (response == 'y' || response == 'Y');
-    */
-
-    // messsagebox edition
-    /*
-    QMessageBox hitBox(pMw);
-    hitBox.setWindowTitle("Choice");
-    hitBox.setText("Wanna hit?");
-    hitBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    if (hitBox.exec() == QMessageBox::Yes)
-        return true;
-    return false;
-    */
-
-    // qbutton editon
-    //setHitFlagZero();
     if (HitFlag == 1) // Hit
         return true;
     else if (HitFlag == -1) // No hit
@@ -64,8 +43,9 @@ void Player::ShowHand(MainWindow *pMw) const
         for (pCard = m_cards.begin(); pCard != m_cards.end(); ++pCard)
         {
             QString card = (*pCard)->QstringType();
-            ShowCard(card, pMw->m_tedt2);
+            ShowCard(card, pMw->m_tedt2);            
         }
+        pMw->m_tedt2->insertHtml(QString::number(GetTotal()));
     }
 }
 

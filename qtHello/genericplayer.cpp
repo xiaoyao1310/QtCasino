@@ -26,7 +26,7 @@ std::string GenericPlayer::getName() const
 
 void GenericPlayer::ShowCard(QString &card, QTextEdit* &pTedt) const
 {
-    pTedt->insertHtml("IMG\n");
+    pTedt->insertHtml("-\n");
     QString imgDir = QCoreApplication::applicationDirPath() + "/pukeImage/";
     imgDir += card;
     imgDir.prepend("<img src=\"");
@@ -36,7 +36,7 @@ void GenericPlayer::ShowCard(QString &card, QTextEdit* &pTedt) const
     pTedt->setReadOnly(true);
 }
 
-// console edition output
+// console edition output, for test use
 std::ostream& operator<<(std::ostream& os, const GenericPlayer& aGenericPlayer)
 {
     os << aGenericPlayer.m_name << ":\t";

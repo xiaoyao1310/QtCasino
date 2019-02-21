@@ -11,9 +11,7 @@ Game::Game(const std::vector<std::string>& names, MainWindow* pMw)
     m_deck.Populate();
     m_deck.Shuffle();
     m_window = pMw;
-
-    //QObject::connect(this, SIGNAL(HitCurrent()), m_players[0], SLOT(setHitFlagPos()));
-    //QObject::connect(this, SIGNAL(NoHitCurrent()), m_players[0], SLOT(setHitFlagNeg()));
+    m_current = 1;
 }
 
 Game::~Game()
@@ -34,9 +32,24 @@ void Game::RemoveCard()
     m_house.Clear();
 }
 
+Player* Game::GetCurrent()
+{
+    if (m_current <= m_players.size())
+    {
+        return m_players[m_current - 1];
+    }
+    else
+        return NULL;
+}
+
 void Game::Play()
 {
     RemoveCard();
+
+    // clear last game result
+    QString blank("");
+    m_window->showLineEdit(blank);
+
     // deal initial 2 cards
     std::vector<Player*>::iterator pPlayer;
     for (int i = 0; i < 2; ++i)
@@ -52,10 +65,8 @@ void Game::Play()
     m_house.FlipFirstCard();
     m_house.ShowHand(m_window);
 
-    for (pPlayer = m_players.begin(); pPlayer != m_players.end(); ++pPlayer)
-    {
-        (*pPlayer)->ShowHand(m_window);
-    }
+    m_players[0]->ShowHand(m_window);
+
     m_window->showButtons();
 }
 
@@ -75,6 +86,7 @@ void Game::ShowResult()
         m_deck.AdditionalCards(m_house, m_window);
     }
 
+    QString qsWin, qsLose, qsPush;
     if (m_house.IsBusted())
     {
         for (pPlayer = m_players.begin(); pPlayer != m_players.end(); ++pPlayer)
@@ -82,10 +94,10 @@ void Game::ShowResult()
             if (!((*pPlayer)->IsBusted()))
             {
                 (*pPlayer)->Win();
-                QString s = QString::fromStdString((*pPlayer)->getName() + " Won!");
-                m_window->showLineEdit(QString(s));
+                qsWin += QString::fromStdString((*pPlayer)->getName() + "- ");
             }
         }
+        m_window->showLineEdit(qsWin + "Won!");
     }
     else
     {
@@ -96,42 +108,69 @@ void Game::ShowResult()
                 if ((*pPlayer)->GetTotal() > m_house.GetTotal())
                 {
                     (*pPlayer)->Win();
-                    QString s = QString::fromStdString((*pPlayer)->getName() + " Won!");
-                    m_window->showLineEdit(QString(s));
+                    qsWin += QString::fromStdString((*pPlayer)->getName() + "- ");
                 }
                 else if ((*pPlayer)->GetTotal() < m_house.GetTotal())
                 {
                     (*pPlayer)->Lose();
-                    QString s = QString::fromStdString((*pPlayer)->getName() + " Lost!");
-                    m_window->showLineEdit(QString(s));
+                    qsLose += QString::fromStdString((*pPlayer)->getName() + "- ");
                 }
                 else
                 {
                     (*pPlayer)->Push();
-                    QString s = QString::fromStdString((*pPlayer)->getName() + " Pushed!");
-                    m_window->showLineEdit(QString(s));
+                    qsPush += QString::fromStdString((*pPlayer)->getName() + "- ");
                 }
             }
         }
+
+        QString qsResult;
+        if (!qsWin.isEmpty())
+            qsResult += (qsWin + "Won! ");
+        if (!qsLose.isEmpty())
+            qsResult += (qsLose + "Lost! ");
+        if (!qsPush.isEmpty())
+            qsResult += (qsPush + "Pushed! ");
+        m_window->showLineEdit(qsResult);
     }
     m_window->hideButtons();
     //RemoveCard();
 }
 
+bool Game::NextPlayer()
+{
+    if (m_current < m_players.size())
+    {
+        m_current++;
+        Player* pPlayer = GetCurrent();
+        pPlayer->ShowHand(m_window);
+        m_window->showButtons();
+        m_window->hideNextB();
+        return true;
+    }
+    else
+    {
+        ShowResult();
+        return false; // already last player
+    }
+}
+
 void Game::Hit()
 {
-    std::vector<Player*>::iterator pPlayer;
-    for (pPlayer = m_players.begin(); pPlayer != m_players.end(); ++pPlayer)
+    Player* pPlayer = GetCurrent();
+    if (pPlayer)
     {
-        (*pPlayer)->setHitFlagPos();
-        (*pPlayer)->ShowHand(m_window);
-        m_deck.AdditionalCards(*(*pPlayer), m_window);
-        (*pPlayer)->setHitFlagZero();
-        (*pPlayer)->ShowHand(m_window);
+        pPlayer->setHitFlagPos();
+        pPlayer->ShowHand(m_window);
+        m_deck.AdditionalCards(*pPlayer, m_window);
+        pPlayer->setHitFlagZero();
+        pPlayer->ShowHand(m_window);
 
-        if ((*pPlayer)->IsBusted())
+        if (pPlayer->IsBusted())
         {
+            QString s = QString::fromStdString(pPlayer->getName() + " Busted!");
+            m_window->showLineEdit(QString(s));
             m_window->hideButtons();
+            m_window->showNextB();
         }
     }
     //emit HitCurrent();
@@ -139,14 +178,16 @@ void Game::Hit()
 
 void Game::NoHit()
 {
-    std::vector<Player*>::iterator pPlayer;
-    for (pPlayer = m_players.begin(); pPlayer != m_players.end(); ++pPlayer)
+    Player* pPlayer = GetCurrent();
+    if (pPlayer)
     {
-        (*pPlayer)->setHitFlagNeg();
-        (*pPlayer)->ShowHand(m_window);
-        m_deck.AdditionalCards(*(*pPlayer), m_window);
-        (*pPlayer)->setHitFlagZero();
+        pPlayer->setHitFlagNeg();
+        pPlayer->ShowHand(m_window);
+        m_deck.AdditionalCards(*pPlayer, m_window);
+        pPlayer->setHitFlagZero();
+
+        m_window->hideButtons();
+        m_window->showNextB();
     }
     //emit NoHitCurrent();
-    ShowResult();
 }
